@@ -19,12 +19,11 @@ impl Rustpad {
     pub fn buffers(&self) -> &Vec<ContentBuffer> {
         &self.buffers
     }
-    
-    
+
     pub fn active_buffer_index(&self) -> Option<usize> {
         self.active_buffer_index
     }
-    
+
     pub fn current_buffer(&self) -> Option<&ContentBuffer> {
         if let Some(active_buffer_index) = self.active_buffer_index {
             if let Some(buffer) = self.buffers.get(active_buffer_index) {
@@ -75,6 +74,14 @@ impl Rustpad {
         if let Some(active_buffer_index) = self.active_buffer_index {
             self.remove_buffer(active_buffer_index);
         }
+    }
+
+    pub fn reload_current_buffer(&mut self) -> Result<()> {
+        if let Some(buffer) = self.current_buffer_mut() {
+            buffer.read()?;
+        }
+
+        Ok(())
     }
 
     pub fn open_file(&mut self) -> Result<()> {
